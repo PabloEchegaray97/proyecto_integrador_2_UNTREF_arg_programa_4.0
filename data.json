@@ -1,0 +1,135 @@
+[{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6ab"
+  },
+  "codigo": 2,
+  "nombre": "Escritorio español de madera",
+  "precio": 499.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6ac"
+  },
+  "codigo": 3,
+  "nombre": "Cama queen size",
+  "precio": 799.99,
+  "categoria": "Dormitorio"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6ad"
+  },
+  "codigo": 4,
+  "nombre": "Mesa de comedor de vidrio",
+  "precio": 699.99,
+  "categoria": "Comedor"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6ae"
+  },
+  "codigo": 5,
+  "nombre": "Estantería modular regulable",
+  "precio": 199.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b0"
+  },
+  "codigo": 1,
+  "nombre": "Silla de Oficina Ergonómica",
+  "precio": 149.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b3"
+  },
+  "codigo": 6,
+  "nombre": "Silla de comedor metálica",
+  "precio": 79.99,
+  "categoria": "Comedor"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b6"
+  },
+  "codigo": 7,
+  "nombre": "Cama individual",
+  "precio": 399.99,
+  "categoria": "Dormitorio"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b7"
+  },
+  "codigo": 9,
+  "nombre": "Mesa de Comedor de Madera",
+  "precio": 299.99,
+  "categoria": "Comedor"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b8"
+  },
+  "codigo": 10,
+  "nombre": "Biblioteca Estilo Industrial",
+  "precio": 249.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6b9"
+  },
+  "codigo": 11,
+  "nombre": "Armario para Ropa",
+  "precio": 499.99,
+  "categoria": "Dormitorio"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6ba"
+  },
+  "codigo": 14,
+  "nombre": "Silla de escritorio giratoria",
+  "precio": 99.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6be"
+  },
+  "codigo": 8,
+  "nombre": "Sillón Reclinable",
+  "precio": 799.99,
+  "categoria": "Sala de estar"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6c2"
+  },
+  "codigo": 15,
+  "nombre": "Escritorio de Cristal",
+  "precio": 299.99,
+  "categoria": "Oficina"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6c5"
+  },
+  "codigo": 13,
+  "nombre": "Sofá Modular",
+  "precio": 1199.99,
+  "categoria": "Sala de estar"
+},
+{
+  "_id": {
+    "$oid": "64b082dabbbdbf35047fd6c7"
+  },
+  "codigo": 12,
+  "nombre": "Cómoda con espejo",
+  "precio": 599.99,
+  "categoria": "Dormitorio"
+}]
