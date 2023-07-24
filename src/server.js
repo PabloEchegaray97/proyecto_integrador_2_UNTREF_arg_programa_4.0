@@ -8,16 +8,6 @@ dotenv.config()
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const condiciones_prueba = {
-    categoria: "Comedor",
-    precio: { $gte: 100, $lte: 300 }
-}
-const updateObject_prueba = {
-    nombre: 'Producto act (511)',
-    precio: 0,
-    categoria: 'pruebas'
-}
-
 app.get('/api/v1/muebles', async (req, res) => {
     try {
         const { categoria, precio_gte, precio_lte } = req.query;
@@ -41,10 +31,10 @@ app.get('/api/v1/muebles', async (req, res) => {
     };
 
 })
+
 app.get('/api/v1/muebles/:id', async (req, res) => {
     try {
-        let { id } = req.params;
-        id = Number(id)
+        const { id } = req.params;
         const result = await getMueble(id);
         if (!result) {
             res.status(400).send('El código no corresponde a un mueble registrado');
@@ -55,22 +45,22 @@ app.get('/api/v1/muebles/:id', async (req, res) => {
         res.status(500).send('Se ha generado un error en el servidor');
     };
 })
+
 app.post('/api/v1/muebles', async (req, res) => {
     try {
-        let { nombre, precio, categoria, color, codigo } = req.body;
+        let { nombre, precio, categoria, codigo } = req.body;
         if (!nombre || !precio || !categoria) {
             return res.status(400).send('Faltan datos relevantes')
         }
         if (!codigo) {
             codigo = await getNextId();
         }
-        let newObject = { // Cambio const por let
+        let newObject = { 
             nombre: nombre,
             precio: Number(precio),
             categoria: categoria,
             codigo: codigo
         }
-        
         await createMueble(newObject);
         res.status(201).send({ message: 'Registro creado', payload: newObject })
     } catch (error) {
@@ -79,30 +69,29 @@ app.post('/api/v1/muebles', async (req, res) => {
 })
 
 app.put('/api/v1/muebles/:codigo', async (req, res) => {
-    let { codigo } = req.params;
-    codigo = Number(codigo)
+    const { codigo } = req.params;
     const { nombre, precio, categoria} = req.body;
     if (!nombre || !precio || !categoria || !codigo) {
         return res.status(400).send('Faltan datos relevantes')
-    }
+    };
     try {     
         const updateObject = {
             nombre: nombre,
             precio: Number(precio),
             categoria: categoria
-        }
-        const mueble = await getMueble(codigo);
-
+        };
+        const mueble = await getMueble(Number(codigo));
         if (!mueble) return res.status(400).send('El código no corresponde a un mueble registrado');
         else {
             const result = await updateMueble(codigo, updateObject);
             console.log(result);
-            res.status(200).send({ message: 'Registro actualizado', payload: result })
+            res.status(200).send({ message: 'Registro actualizado', payload: result });
         }
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor')
-    }
-})
+        res.status(500).send('Se ha generado un error en el servidor');
+    };
+});
+
 app.delete('/api/v1/muebles/:id', async (req, res) => {
     try {
         let { id } = req.params;
@@ -110,15 +99,17 @@ app.delete('/api/v1/muebles/:id', async (req, res) => {
         result = await deleteMueble(id);
         if (result.deletedCount == 0) {
             return res.status(400).send('Registro no eliminado')
-        }
+        };
         res.status(200).send('Registro eliminado');
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor')
-    }
-})
+        res.status(500).send('Se ha generado un error en el servidor');
+    };
+});
+
 app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
     console.log(`Running on http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api/v1/muebles/`);
-})
+});
+
 
 const getMuebles = async (condiciones) => {
     try {
@@ -129,37 +120,36 @@ const getMuebles = async (condiciones) => {
             const collection = await db.collection('muebles').find().toArray();
             return collection;
         }
-       
         if (condiciones.precio && condiciones.precio.$lte) {
-            sortOption = { precio: -1 }; // -1 para orden descendente, 1 para orden ascendente
+            sortOption = { precio: -1 }; 
         }
-
         if (condiciones.categoria) {
-            sortOption = { nombre: 1 } ; // 1 para orden ascendente por categoría
+            sortOption = { nombre: 1 } ;
         }
-        
         const collection = await db.collection('muebles').find(condiciones).sort(sortOption).toArray();
-
-        return collection
+        return collection;
     } catch (error) {
-        throw new Error('Error getting data: ', error)
+        throw new Error('Error getting data: ', error);
     }
     finally {
-        await disconnectDB()
-    }
+        await disconnectDB();
+    };
 };
 
 const getMueble = async (id) => {
     try {
         const client = await connectDB();
         const db = client.db('muebleria');
-        const mueble = await db.collection('muebles').findOne({ codigo: id });
-        await disconnectDB();
+        const mueble = await db.collection('muebles').findOne({ codigo: Number(id) });
         return mueble;
     } catch (error) {
         throw new Error('Error getting data: ', error)
-    };
+    }
+    finally {
+        await disconnectDB();
+    }
 };
+
 const createMueble = async (newObject) => {
     const client = await connectDB();
     const db = client.db('muebleria');
@@ -170,25 +160,25 @@ const createMueble = async (newObject) => {
     } catch (error) {
         throw new Error('Error creating document: ', error);
     } finally {
-        await disconnectDB()
-    }
-}
+        await disconnectDB();
+    };
+};
 
 const updateMueble = async (id, updateObject) => {
     try {
         const client = await connectDB();
         const db = client.db('muebleria');
         const mueble = await db.collection('muebles').findOneAndUpdate(
-            { codigo: id },
+            { codigo: Number(id) },
             { $set: updateObject },
             { returnDocument: "after" }
         );
-        await disconnectDB();
-        
         return mueble.value;
     } catch (error) {
         throw new Error('Error getting data: ', error)
-    }
+    } finally {
+        await disconnectDB();
+    };
 }
 
 const deleteMueble = async (id) => {
@@ -196,12 +186,14 @@ const deleteMueble = async (id) => {
         const client = await connectDB();
         const db = client.db('muebleria');
         const mueble = await db.collection('muebles').deleteOne({ codigo: id });
-        await disconnectDB();
         return mueble;
     } catch (error) {
         throw new Error('Error getting data: ', error)
-    }
-}
+    } finally {
+        await disconnectDB();
+    };
+};
+
 const getNextId = async () => {
     try {
         let list = await getMuebles({});
