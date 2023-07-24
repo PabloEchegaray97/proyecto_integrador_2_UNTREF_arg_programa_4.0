@@ -55,30 +55,30 @@ async function testEnvDist() {
     let data = await readFile(path.join(__dirname, '../.env.dist'));
     data = data.length > 0 ? data.map((element) => element.split('=')) : [];
 
-    const SERVER_HOST = data.find((item) => item[0] === 'SERVER_HOST');
-    const SERVER_PORT = data.find((item) => item[0] === 'SERVER_PORT');
-    const DATABASE_URL = data.find((item) => item[0] === 'DATABASE_URL');
-    const DATABASE_NAME = data.find((item) => item[0] === 'DATABASE_NAME');
+    const SERVER_HOST = data.find((item) => item[0].trim() === 'SERVER_HOST');
+    const SERVER_PORT = data.find((item) => item[0].trim() === 'SERVER_PORT');
+    const DATABASE_URL = data.find((item) => item[0].trim() === 'DATABASE_URL');
+    const DATABASE_NAME = data.find((item) => item[0].trim() === 'DATABASE_NAME');
 
     isEqual({ subTitle: `La variable "SERVER_HOST" debe estar declarada`, result: SERVER_HOST !== undefined });
-    isEqual({ subTitle: `El valor de "SERVER_HOST" debe ser "127.0.0.1"`, result: (SERVER_HOST && SERVER_HOST[1] === '127.0.0.1') });
+    isEqual({ subTitle: `El valor de "SERVER_HOST" debe ser "127.0.0.1"`, result: (SERVER_HOST && SERVER_HOST[1].trim() === '127.0.0.1') });
     isEqual({ subTitle: `La variable "SERVER_PORT" debe estar declarada`, result: SERVER_PORT !== undefined });
-    isEqual({ subTitle: `El valor de "SERVER_PORT" debe ser "3005"`, result: (SERVER_PORT && SERVER_PORT[1] === '3005') });
+    isEqual({ subTitle: `El valor de "SERVER_PORT" debe ser "3005"`, result: (SERVER_PORT && SERVER_PORT[1].trim() === '3005') });
     isEqual({ subTitle: `La variable "DATABASE_URL" debe estar declarada`, result: DATABASE_URL !== undefined });
-    isEqual({ subTitle: `El valor de "DATABASE_URL" debe ser "tu-cadena-de-conexion"`, result: (DATABASE_URL && DATABASE_URL[1] === 'tu-cadena-de-conexion') });
+    isEqual({ subTitle: `El valor de "DATABASE_URL" debe ser "tu-cadena-de-conexion"`, result: (DATABASE_URL && DATABASE_URL[1].trim() === 'tu-cadena-de-conexion') });
     isEqual({ subTitle: `La variable "DATABASE_NAME" debe estar declarada`, result: DATABASE_NAME !== undefined });
-    isEqual({ subTitle: `El valor de "DATABASE_NAME" debe ser "muebleria"`, result: (DATABASE_NAME && DATABASE_NAME[1] === 'muebleria') });
+    isEqual({ subTitle: `El valor de "DATABASE_NAME" debe ser "muebleria"`, result: (DATABASE_NAME && DATABASE_NAME[1].trim() === 'muebleria') });
 }
 
 async function testGitIgnore() {
     console.log(`TEST N°1.3: Éxito - Archivo .gitignore`);
     let data = await readFile(path.join(__dirname, '../.gitignore'));
     data = data.length > 0 ? data : [];
-    const NODE_MODULES = data.find((item) => item === 'node_modules/');
-    const ENV = data.find((item) => item === '.env');
+    const NODE_MODULES = data.find((item) => item.trim() === 'node_modules/');
+    const ENV = data.find((item) => item.trim() === '.env');
 
-    isEqual({ subTitle: `El directorio "node_modules/" debe estar declarado`, result: NODE_MODULES === 'node_modules/' });
-    isEqual({ subTitle: `El archivo ".env" debe estar declarado`, result: (ENV === '.env') });
+    isEqual({ subTitle: `El directorio "node_modules/" debe estar declarado`, result: (NODE_MODULES && NODE_MODULES.trim() === 'node_modules/') });
+    isEqual({ subTitle: `El archivo ".env" debe estar declarado`, result: (ENV && ENV.trim() === '.env') });
 }
 
 async function testFileConnectionDB() {
@@ -375,7 +375,7 @@ async function run() {
     await testMethodGET(
         'TEST N°6.2: Fracaso - Método GET específico filtrado por un código inxesistente "22"',
         'http://127.0.0.1:3005/api/v1/muebles/22',
-        (response) => ({ subTitle: `El código HTTP debe ser 200`, result: response.status === 400 }),
+        (response) => ({ subTitle: `El código HTTP debe ser 400`, result: response.status === 400 }),
         [(data) => ({
             subTitle: `El mensaje debe ser\n\t   "El código no corresponde a un mueble registrado"`,
             result: (data && data.message

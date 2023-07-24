@@ -4,7 +4,7 @@
     "description": "Curso de Programación BackEnd - UNTREF",
     "scripts": {
         "start": "node --watch --no-warnings ./src/server.js",
-        "test": "node --no-warnings ./tests/*.test.js",
+        "test": "node --no-warnings ./tests/test.js",
         "stop": "killall -9 node",
         "eslint": "eslint ./src"
     },
