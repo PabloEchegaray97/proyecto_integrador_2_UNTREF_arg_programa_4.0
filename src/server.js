@@ -37,12 +37,12 @@ app.get('/api/v1/muebles/:id', async (req, res) => {
         const { id } = req.params;
         const result = await getMueble(id);
         if (!result) {
-            res.status(400).send('El código no corresponde a un mueble registrado');
+            res.status(400).send({message: 'El código no corresponde a un mueble registrado'});
         } else {
             res.status(200).send({ payload: result });
         }
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor');
+        res.status(500).send({message: 'Se ha generado un error en el servidor'});
     };
 })
 
@@ -50,7 +50,7 @@ app.post('/api/v1/muebles', async (req, res) => {
     try {
         let { nombre, precio, categoria, codigo } = req.body;
         if (!nombre || !precio || !categoria) {
-            return res.status(400).send('Faltan datos relevantes')
+            return res.status(400).send({message: 'Faltan datos relevantes'})
         }
         if (!codigo) {
             codigo = await getNextId();
@@ -64,7 +64,7 @@ app.post('/api/v1/muebles', async (req, res) => {
         await createMueble(newObject);
         res.status(201).send({ message: 'Registro creado', payload: newObject })
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor');
+        res.status(500).send({message: 'Se ha generado un error en el servidor'});
     }
 })
 
@@ -72,7 +72,7 @@ app.put('/api/v1/muebles/:codigo', async (req, res) => {
     const { codigo } = req.params;
     const { nombre, precio, categoria} = req.body;
     if (!nombre || !precio || !categoria || !codigo) {
-        return res.status(400).send('Faltan datos relevantes')
+        return res.status(400).send({message: 'Faltan datos relevantes'})
     };
     try {     
         const updateObject = {
@@ -81,14 +81,14 @@ app.put('/api/v1/muebles/:codigo', async (req, res) => {
             categoria: categoria
         };
         const mueble = await getMueble(Number(codigo));
-        if (!mueble) return res.status(400).send('El código no corresponde a un mueble registrado');
+        if (!mueble) return res.status(400).send({message: 'El código no corresponde a un mueble registrado'});
         else {
             const result = await updateMueble(codigo, updateObject);
             console.log(result);
             res.status(200).send({ message: 'Registro actualizado', payload: result });
         }
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor');
+        res.status(500).send({message: 'Se ha generado un error en el servidor'});
     };
 });
 
@@ -98,11 +98,11 @@ app.delete('/api/v1/muebles/:id', async (req, res) => {
         id = Number(id);
         result = await deleteMueble(id);
         if (result.deletedCount == 0) {
-            return res.status(400).send('Registro no eliminado')
+            return res.status(400).send({message: 'El código no corresponde a un mueble registrado'})
         };
-        res.status(200).send('Registro eliminado');
+        res.status(200).send({message: 'Registro eliminado'});
     } catch (error) {
-        res.status(500).send('Se ha generado un error en el servidor');
+        res.status(500).send({message: 'Se ha generado un error en el servidor'});
     };
 });
 
